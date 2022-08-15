@@ -1,0 +1,13 @@
+#!/bin/bash
+
+module load miniconda/3
+source activate bitc
+
+cd /home/vla/python/bitc_Mg/Mg2EDTA/5.analysis/containing_rate_predict_vs_observe/plots/pymc3_lognomP0_lognomLs
+pwd
+date
+bash run_me.sh
+date
+
+#qsub submit.job to run this
+#qstat to check job

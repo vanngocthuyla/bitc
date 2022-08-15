@@ -1,0 +1,216 @@
+Mon Apr 25 11:48:58 CDT 2022
+Using numpyro 0.6.0
+Using jax 0.2.10
+Will run these ['Mg1EDTAp1a', 'Mg1EDTAp1b', 'Mg1EDTAp1c', 'Mg1EDTAp1d', 'Mg1EDTAp1e', 'Mgp5EDTAp05a', 'Mgp5EDTAp05b', 'Mgp5EDTAp05c', 'Mgp5EDTAp05e', 'Mgp5EDTAp05f', 'Mgp5EDTAp05g', 'Mgp5EDTAp05h', 'Mgp5EDTAp05i', 'Mgp5EDTAp05j']
+Running Mg1EDTAp1a
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.06      0.06     -9.06     -9.16     -8.96  39640.07      1.00
+     DeltaH     -2.34      0.02     -2.34     -2.37     -2.31  40031.95      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  39478.67      1.00
+         Ls      1.00      0.00      1.00      1.00      1.00  39737.42      1.00
+         P0      0.08      0.00      0.08      0.08      0.08  40230.74      1.00
+  log_sigma    -14.78      0.17    -14.79    -15.05    -14.50  40298.94      1.00
+
+Number of divergences: 0
+Running Mg1EDTAp1b
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.05      0.04     -9.05     -9.11     -8.98  39740.20      1.00
+     DeltaH     -2.30      0.01     -2.30     -2.32     -2.29  39449.54      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  39761.27      1.00
+         Ls      1.00      0.00      1.00      1.00      1.00  39469.99      1.00
+         P0      0.08      0.00      0.08      0.08      0.08  39207.45      1.00
+  log_sigma    -15.32      0.17    -15.33    -15.60    -15.06  40292.15      1.00
+
+Number of divergences: 0
+Running Mg1EDTAp1c
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.02      0.04     -9.02     -9.09     -8.95  39494.93      1.00
+     DeltaH     -2.24      0.01     -2.24     -2.26     -2.23  39487.98      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40273.26      1.00
+         Ls      1.00      0.00      1.00      1.00      1.00  39491.66      1.00
+         P0      0.08      0.00      0.08      0.08      0.08  40291.74      1.00
+  log_sigma    -15.24      0.17    -15.25    -15.52    -14.97  40477.25      1.00
+
+Number of divergences: 0
+Running Mg1EDTAp1d
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.14      0.13     -9.14     -9.35     -8.94  39761.66      1.00
+     DeltaH     -2.30      0.03     -2.29     -2.35     -2.24  40086.87      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40614.79      1.00
+         Ls      1.00      0.00      1.00      1.00      1.00  37989.65      1.00
+         P0      0.10      0.00      0.10      0.10      0.11  38726.80      1.00
+  log_sigma    -14.09      0.17    -14.10    -14.36    -13.81  40681.07      1.00
+
+Number of divergences: 0
+Running Mg1EDTAp1e
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.36      0.16     -9.35     -9.62     -9.10  40372.32      1.00
+     DeltaH     -2.29      0.04     -2.29     -2.35     -2.23  40247.38      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  39345.10      1.00
+         Ls      1.00      0.00      1.00      1.00      1.00  40441.38      1.00
+         P0      0.09      0.00      0.09      0.09      0.09  38387.52      1.00
+  log_sigma    -14.03      0.17    -14.04    -14.30    -13.76  40345.34      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05a
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -8.99      0.12     -8.98     -9.18     -8.80  40645.78      1.00
+     DeltaH     -2.29      0.04     -2.29     -2.36     -2.22  39866.51      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40122.65      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  38695.54      1.00
+         P0      0.06      0.00      0.06      0.06      0.06  38681.36      1.00
+  log_sigma    -14.73      0.16    -14.74    -15.00    -14.47  39284.83      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05b
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -8.81      0.07     -8.81     -8.93     -8.69  40172.19      1.00
+     DeltaH     -2.24      0.03     -2.24     -2.28     -2.19  38894.45      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  38859.97      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39688.51      1.00
+         P0      0.05      0.00      0.05      0.05      0.05  38663.48      1.00
+  log_sigma    -15.17      0.16    -15.18    -15.44    -14.91  39593.87      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05c
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.00      0.12     -9.00     -9.19     -8.81  40031.69      1.00
+     DeltaH     -2.16      0.04     -2.16     -2.22     -2.10  39662.33      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  39998.28      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39091.98      1.00
+         P0      0.05      0.00      0.05      0.05      0.05  39619.39      1.00
+  log_sigma    -14.80      0.16    -14.81    -15.07    -14.54  39951.32      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05e
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -8.78      0.21     -8.77     -9.12     -8.43  40540.63      1.00
+     DeltaH     -2.90      0.10     -2.90     -3.06     -2.74  40097.31      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40256.25      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39891.01      1.00
+         P0      0.04      0.00      0.04      0.04      0.04  39795.39      1.00
+  log_sigma    -13.98      0.16    -13.99    -14.25    -13.72  39976.10      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05f
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.05      0.10     -9.05     -9.23     -8.89  40197.04      1.00
+     DeltaH     -2.16      0.03     -2.16     -2.21     -2.10  39631.39      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40324.51      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39410.77      1.00
+         P0      0.05      0.00      0.05      0.05      0.05  38974.99      1.00
+  log_sigma    -14.92      0.16    -14.93    -15.19    -14.66  40314.72      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05g
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -8.87      0.12     -8.87     -9.06     -8.67  40446.95      1.00
+     DeltaH     -2.07      0.04     -2.07     -2.13     -2.00  40309.76      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40092.28      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39131.47      1.00
+         P0      0.05      0.00      0.05      0.05      0.05  39997.68      1.00
+  log_sigma    -14.79      0.16    -14.80    -15.06    -14.53  39300.94      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05h
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -9.35      0.47     -9.33     -9.69     -8.98   6342.60      1.00
+     DeltaH     -1.92      0.05     -1.92     -2.01     -1.83  40535.00      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40378.31      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39466.53      1.00
+         P0      0.05      0.00      0.05      0.05      0.05  39598.43      1.00
+  log_sigma    -14.34      0.16    -14.35    -14.61    -14.08  39752.80      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05i
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -8.93      0.08     -8.93     -9.06     -8.80  39831.51      1.00
+     DeltaH     -2.17      0.03     -2.17     -2.22     -2.13  40042.88      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  39978.99      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39492.99      1.00
+         P0      0.05      0.00      0.05      0.05      0.05  39583.68      1.00
+  log_sigma    -15.17      0.16    -15.17    -15.43    -14.90  39977.24      1.00
+
+Number of divergences: 0
+Running Mgp5EDTAp05j
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+Uniform prior for P0
+
+                 mean       std    median      5.0%     95.0%     n_eff     r_hat
+     DeltaG     -8.94      0.09     -8.94     -9.10     -8.79  40363.59      1.00
+     DeltaH     -2.13      0.03     -2.13     -2.19     -2.08  40382.67      1.00
+   DeltaH_0     -0.00      0.00     -0.00     -0.00     -0.00  40015.97      1.00
+         Ls      0.50      0.00      0.50      0.50      0.50  39862.81      1.00
+         P0      0.05      0.00      0.05      0.05      0.05  39277.97      1.00
+  log_sigma    -15.01      0.16    -15.02    -15.28    -14.75  39767.64      1.00
+
+Number of divergences: 0
+DONE
+Mon Apr 25 12:00:36 CDT 2022
