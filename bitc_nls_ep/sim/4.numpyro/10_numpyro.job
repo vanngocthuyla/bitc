@@ -1,0 +1,26 @@
+#!/bin/bash
+#PBS -S /bin/bash
+#PBS -o /home/vla/python/bitc_nls_ep/sim/4.numpyro/10_numpyro.log 
+#PBS -j oe
+#PBS -l nodes=1:ppn=1,mem=2048mb,walltime=72:00:00
+
+module load miniconda/3
+source activate bitc
+cd /home/vla/python/bitc_nls_ep/sim/4.numpyro
+date
+python /home/vla/python/bitc_sim_mcmc_nls_ep/scripts/run_numpyro_sim.py --itc_data_dir /home/vla/python/bitc_nls_ep/sim/2.dummy_itc_files --heat_data_dir /home/vla/python/bitc_nls_ep/sim/3.heat_in_origin_format --experimental_design_parameters_dir /home/vla/python/bitc_nls_ep/sim/1.run_simulated_heats --experiments "900_sim 901_sim 902_sim 903_sim 904_sim 905_sim 906_sim
+ 907_sim 908_sim 909_sim 910_sim 911_sim 912_sim 913_sim
+ 914_sim 915_sim 916_sim 917_sim 918_sim 919_sim 920_sim
+ 921_sim 922_sim 923_sim 924_sim 925_sim 926_sim 927_sim
+ 928_sim 929_sim 930_sim 931_sim 932_sim 933_sim 934_sim
+ 935_sim 936_sim 937_sim 938_sim 939_sim 940_sim 941_sim
+ 942_sim 943_sim 944_sim 945_sim 946_sim 947_sim 948_sim
+ 949_sim 950_sim 951_sim 952_sim 953_sim 954_sim 955_sim
+ 956_sim 957_sim 958_sim 959_sim 960_sim 961_sim 962_sim
+ 963_sim 964_sim 965_sim 966_sim 967_sim 968_sim 969_sim
+ 970_sim 971_sim 972_sim 973_sim 974_sim 975_sim 976_sim
+ 977_sim 978_sim 979_sim 980_sim 981_sim 982_sim 983_sim
+ 984_sim 985_sim 986_sim 987_sim 988_sim 989_sim 990_sim
+ 991_sim 992_sim 993_sim 994_sim 995_sim 996_sim 997_sim
+ 998_sim 999_sim"  --dc 0.100000  --ds 0.100000  --dummy_itc_file    --concentration_range_factor 10.000000  --niters 10000  --nburn 1000  --nthin 2  --nchain 4 
+date 

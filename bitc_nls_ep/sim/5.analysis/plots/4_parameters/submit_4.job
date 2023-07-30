@@ -1,0 +1,13 @@
+#!/bin/bash
+
+module load miniconda/3
+source activate bitc
+
+cd /home/vla/python/bitc_nls_ep/sim/5.analysis/plots/4_parameters/
+pwd
+date
+bash run_me.sh
+date
+
+#qsub submit.job to run this
+#qstat to check job

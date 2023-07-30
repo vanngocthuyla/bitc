@@ -1,0 +1,26 @@
+#!/bin/bash
+#PBS -S /bin/bash
+#PBS -o /home/vla/python/bitc_nls_ep/sim/4.numpyro/4_numpyro.log 
+#PBS -j oe
+#PBS -l nodes=1:ppn=1,mem=2048mb,walltime=72:00:00
+
+module load miniconda/3
+source activate bitc
+cd /home/vla/python/bitc_nls_ep/sim/4.numpyro
+date
+python /home/vla/python/bitc_sim_mcmc_nls_ep/scripts/run_numpyro_sim.py --itc_data_dir /home/vla/python/bitc_nls_ep/sim/2.dummy_itc_files --heat_data_dir /home/vla/python/bitc_nls_ep/sim/3.heat_in_origin_format --experimental_design_parameters_dir /home/vla/python/bitc_nls_ep/sim/1.run_simulated_heats --experiments "300_sim 301_sim 302_sim 303_sim 304_sim 305_sim 306_sim
+ 307_sim 308_sim 309_sim 310_sim 311_sim 312_sim 313_sim
+ 314_sim 315_sim 316_sim 317_sim 318_sim 319_sim 320_sim
+ 321_sim 322_sim 323_sim 324_sim 325_sim 326_sim 327_sim
+ 328_sim 329_sim 330_sim 331_sim 332_sim 333_sim 334_sim
+ 335_sim 336_sim 337_sim 338_sim 339_sim 340_sim 341_sim
+ 342_sim 343_sim 344_sim 345_sim 346_sim 347_sim 348_sim
+ 349_sim 350_sim 351_sim 352_sim 353_sim 354_sim 355_sim
+ 356_sim 357_sim 358_sim 359_sim 360_sim 361_sim 362_sim
+ 363_sim 364_sim 365_sim 366_sim 367_sim 368_sim 369_sim
+ 370_sim 371_sim 372_sim 373_sim 374_sim 375_sim 376_sim
+ 377_sim 378_sim 379_sim 380_sim 381_sim 382_sim 383_sim
+ 384_sim 385_sim 386_sim 387_sim 388_sim 389_sim 390_sim
+ 391_sim 392_sim 393_sim 394_sim 395_sim 396_sim 397_sim
+ 398_sim 399_sim"  --dc 0.100000  --ds 0.100000  --dummy_itc_file    --concentration_range_factor 10.000000  --niters 10000  --nburn 1000  --nthin 2  --nchain 4 
+date 
