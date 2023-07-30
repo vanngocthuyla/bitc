@@ -83,48 +83,20 @@ def LLH(q_obs, q_model):
     return loglikelihood
 
 
-def fitted_function(injection_volumes, q_actual_cal, V0, beta, N, params_guess=None, bounds=None):
-    
-    def heats_5_parameters(DeltaVn, P0, Ls, DeltaG, DeltaH, DeltaH_0):
-        
-        Kd = np.exp(beta * DeltaG) # dissociation constant (M)
+def fitted_function(params, q_actual_cal, V0, DeltaVn, beta, N):
+    q_calculated = heats_TwoComponentBindingModel(*params, V0, DeltaVn, beta, N)
+    return LLH(q_actual_cal, q_calculated)
 
-        Pn = np.zeros([N])
-        Ln = np.zeros([N])
-        PLn = np.zeros([N])
 
-        dcum = 1.0  # cumulative dilution factor (dimensionless)
-        for n in range(N):
-            d = 1.0 - (DeltaVn[n] / V0)
-            dcum *= d  # cumulative dilution factor
-            P = V0 * P0 * 1.e-3 * dcum
-            L = V0 * Ls * 1.e-3 * (1. - dcum)
-            PLn[n] = (0.5 / V0 * ((P + L + Kd * V0) - np.sqrt((P + L + Kd * V0) ** 2 - 4 * P * L) ))
-            Pn[n] = P / V0 - PLn[n]
-            Ln[n] = L / V0 - PLn[n]
-
-        q_n = np.zeros([N])
-        q_n[0] = (DeltaH * V0 * PLn[0])*1000. + DeltaH_0
-
-        for n in range(1, N):
-            d = 1.0 - (DeltaVn[n] / V0)  # dilution factor (dimensionless)
-            q_n[n] = (DeltaH * V0 * (PLn[n] - d * PLn[n - 1])) * 1000. + DeltaH_0
-        return q_n
-
-    fit_f, var_matrix = curve_fit(heats_5_parameters, xdata=injection_volumes, ydata=q_actual_cal,
-                                  sigma=np.ones(len(q_actual_cal))*np.std(q_actual_cal, ddof=1),
-                                  absolute_sigma=True, p0=params_guess, bounds=bounds,
-                                  ftol=1e-13)
-    perr = np.sqrt(np.diag(var_matrix))
-    SSR = np.sum((heats_5_parameters(injection_volumes, *fit_f) - q_actual_cal)**2)
-    sigma = np.sqrt(SSR/(N-5))
-    return fit_f, perr*sigma
+def fitted_function_fixed_P0_Ls(params, P0, Ls, q_actual_cal, V0, DeltaVn, beta, N):
+    q_calculated = heats_TwoComponentBindingModel(P0, Ls, *params, V0, DeltaVn, beta, N)
+    return LLH(q_actual_cal, q_calculated)
 
 
 def fitted_function_fixed_Ls(injection_volumes, q_actual_cal, Ls, V0, beta, N, 
                              params_guess=None, bounds=None):
 
-    def heats_4_parameters(DeltaVn, P0, DeltaG, DeltaH, DeltaH_0):
+    def heats_2C(DeltaVn, P0, DeltaG, DeltaH, DeltaH_0):
         Kd = np.exp(beta * DeltaG) # dissociation constant (M)
 
         Pn = np.zeros([N])
@@ -149,52 +121,10 @@ def fitted_function_fixed_Ls(injection_volumes, q_actual_cal, Ls, V0, beta, N,
             q_n[n] = (DeltaH * V0 * (PLn[n] - d * PLn[n - 1])) * 1000. + DeltaH_0
         return q_n
 
-    fit_f, var_matrix = curve_fit(heats_4_parameters, xdata=injection_volumes, ydata=q_actual_cal,
-                                  sigma=np.ones(len(q_actual_cal))*np.std(q_actual_cal, ddof=1),
+    fit_f, var_matrix = curve_fit(heats_2C, xdata=injection_volumes, ydata=q_actual_cal,
                                   absolute_sigma=True, p0=params_guess, bounds=bounds)
-    fit_f, var_matrix = curve_fit(heats_4_parameters, xdata=injection_volumes, ydata=q_actual_cal,
-                                  absolute_sigma=True, p0=fit_f, bounds=bounds)
     perr = np.sqrt(np.diag(var_matrix))
-    SSR = np.sum((heats_4_parameters(injection_volumes, *fit_f) - q_actual_cal)**2)
-    sigma = np.sqrt(SSR/(N-4))
-    return fit_f, perr*sigma
-
-
-def fitted_function_fixed_P0_Ls(injection_volumes, q_actual_cal, P0, Ls, V0, beta, N, 
-                                params_guess=None, bounds=None):
-
-    def heats_3_parameters(DeltaVn, DeltaG, DeltaH, DeltaH_0):
-        Kd = np.exp(beta * DeltaG) # dissociation constant (M)
-
-        Pn = np.zeros([N])
-        Ln = np.zeros([N])
-        PLn = np.zeros([N])
-
-        dcum = 1.0  # cumulative dilution factor (dimensionless)
-        for n in range(N):
-            d = 1.0 - (DeltaVn[n] / V0)
-            dcum *= d  # cumulative dilution factor
-            P = V0 * P0 * 1.e-3 * dcum
-            L = V0 * Ls * 1.e-3 * (1. - dcum)
-            PLn[n] = (0.5 / V0 * ((P + L + Kd * V0) - np.sqrt((P + L + Kd * V0) ** 2 - 4 * P * L) ))
-            Pn[n] = P / V0 - PLn[n]
-            Ln[n] = L / V0 - PLn[n]
-
-        q_n = np.zeros([N])
-        q_n[0] = (DeltaH * V0 * PLn[0])*1000. + DeltaH_0
-
-        for n in range(1, N):
-            d = 1.0 - (DeltaVn[n] / V0)  # dilution factor (dimensionless)
-            q_n[n] = (DeltaH * V0 * (PLn[n] - d * PLn[n - 1])) * 1000. + DeltaH_0
-        return q_n
-
-    fit_f, var_matrix = curve_fit(heats_3_parameters, xdata=injection_volumes, ydata=q_actual_cal,
-                                  sigma=np.ones(len(q_actual_cal))*np.std(q_actual_cal, ddof=1),
-                                  absolute_sigma=True, p0=params_guess, bounds=bounds,
-                                  ftol=1e-13
-                                  )
-    perr = np.sqrt(np.diag(var_matrix))
-    SSR = np.sum((heats_3_parameters(injection_volumes, *fit_f) - q_actual_cal)**2)
+    SSR = np.sum((heats_2C(injection_volumes, *fit_f) - q_actual_cal)**2)
     sigma = np.sqrt(SSR/(N-len(fit_f)))
     return fit_f, perr*sigma
 

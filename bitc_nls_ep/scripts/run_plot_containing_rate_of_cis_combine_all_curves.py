@@ -12,42 +12,43 @@ import pickle
 import matplotlib
 import matplotlib.pyplot as plt
 
+from matplotlib import font_manager
+font_dirs = ['/home/vla/python/fonts/arial']
+for font in font_manager.findSystemFonts(font_dirs):
+    font_manager.fontManager.addfont(font)
+matplotlib.rcParams['font.family'] = ['arial']
+
 from _confidence_intervals import rate_of_containing_from_sample, rate_of_containing_from_means_stds
 from _plot_confidence_intervals import plot_containing_rates
 from _data_files import read_experimental_design_parameters
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument( "--experimental_design_parameters_dir",    type=str, default="")
-parser.add_argument( "--bitc_mcmc_dir",                         type=str, default="bitc_mcmc")
-parser.add_argument( "--MLE_result_file",                       type=str, default="MLE_parameters.csv")
-parser.add_argument( "--propagation_error_result_file",         type=str, default="Propagation_parameters.csv")
+parser.add_argument( "--experimental_design_parameters_dir",    type=str,               default="")
+parser.add_argument( "--bitc_mcmc_dir",                         type=str,               default="bitc_mcmc")
+parser.add_argument( "--nonlinear_fit_result_file",             type=str,               default="MLE_parameters.csv")
+parser.add_argument( "--propagation_error_result_file",         type=str,               default="Propagation_parameters.csv")
 
-parser.add_argument( "--ordered_experiment_names",              type=str, default="" )
-parser.add_argument( "--parameter",                             type=str, default="DeltaG")
-parser.add_argument( "--central",                               type=str, default="median")
-parser.add_argument( "--true_value",                            type=int, default=1)
-parser.add_argument( "--true_value_concentration",              type=int, default=1)
+parser.add_argument( "--ordered_experiment_names",              type=str,               default="" )
+parser.add_argument( "--parameter",                             type=str,               default="P0 Ls DeltaG DeltaH DeltaH_0")
+parser.add_argument( "--central",                               type=str,               default="median")
+parser.add_argument( "--true_value",                            action="store_true",    default=True)
+parser.add_argument( "--true_value_concentration",              action="store_true",    default=True)
 
 args = parser.parse_args()
-args.true_value = bool(args.true_value)
-args.true_value_concentration = bool(args.true_value_concentration)
-
-assert args.true_value in [0, 1], "1. Using true value or 0. No using true value"
-assert args.true_value_concentration in [0, 1], "1. Using the true values of concentration with error 0. Using the values of concentration without error."
 
 MARKERS = ("<", ">", "o", "s")
 COLORS = ("r", "b", "g", "k")
-params_name = ["P0", "Ls", "DeltaG", "DeltaH", "DeltaH_0"]
+params_name = args.parameter.split() #["P0", "Ls", "DeltaG", "DeltaH", "DeltaH_0"]
 params_name_greek = {"DeltaG"    :   "$\Delta G$ (kcal/mol)", 
                      "DeltaH"    :   "$\Delta H$ (kcal/mol)", 
-                     "DeltaH_0"  :   "$\Delta H_0$ (kcal)",
+                     "DeltaH_0"  :   "$\Delta H_0$ (cal)",
                      "P0"        :   "$[R]_0$ (mM)", 
                      "Ls"        :   "$[L]_s$ (mM)", 
                      "log_sigma" :   "$\ln \sigma$" }
 
 ordered_experiment_names = args.ordered_experiment_names.split()
-print("Working with", args.MLE_result_file, "and", args.propagation_error_result_file)
+print("Working with", args.nonlinear_fit_result_file, "and", args.propagation_error_result_file)
 
 assert args.central in ["mean", "median"], "wrong central"
 
@@ -134,7 +135,7 @@ if len(b_rates_list) == 0:
                 open("Bayesian.pkl", "wb"))
 
 # nonlinear ls cis
-MLE_results = pd.read_csv(args.MLE_result_file, index_col=0)
+MLE_results = pd.read_csv(args.nonlinear_fit_result_file, index_col=0)
 MLE_results = MLE_results.reindex(ordered_experiment_names)
 
 for exper in MLE_results.index:

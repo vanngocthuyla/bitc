@@ -29,29 +29,29 @@ def plot_vertically_stacked_cis(lowers, uppers, xlabel, out,
         assert len(lower_errors) == len(upper_errors) == len(lowers), "lowers, lower_errors and upper_errors must have the same len"
 
     plt.figure(figsize=figure_size)
+    ax = plt.axes()
 
-    xs = zip(lowers, uppers)
+    xs = list(zip(lowers, uppers))
     ys = [ [i, i] for i in range(len(lowers)) ]
-
+    
     for i in range(len(xs)):
-        plt.plot(xs[i], ys[i], linestyle="-", color=main_color, lw=main_lw)
+        ax.plot(xs[i], ys[i], linestyle="-", color=main_color, linewidth=main_lw)
 
     if (lower_errors is not None) and (upper_errors is not None):
         l_err_bars = [ [val - err, val + err] for val, err in zip(lowers, lower_errors) ]
         u_err_bars = [ [val - err, val + err] for val, err in zip(uppers, upper_errors) ]
 
         for i in range( len(l_err_bars) ):
-            plt.plot(l_err_bars[i], ys[i], linestyle="-", color=error_color, lw=error_lw)
-            plt.plot(u_err_bars[i], ys[i], linestyle="-", color=error_color, lw=error_lw)
+            ax.plot(l_err_bars[i], ys[i], linestyle="-", color=error_color, linewidth=error_lw)
+            ax.plot(u_err_bars[i], ys[i], linestyle="-", color=error_color, linewidth=error_lw)
 
     if centrals is not None:
         y_min = np.min(ys)
         y_max = np.max(ys)
 
         for central in centrals:
-            plt.plot([central, central], [y_min, y_max], linestyle="-", color=central_color, lw=central_lw)
+            ax.plot([central, central], [y_min, y_max], linestyle="-", color=central_color, linewidth=central_lw)
 
-    ax = plt.axes()
     ax.locator_params(axis='x', nbins=nticks)
 
     lower_y = np.min(ys) - 1
@@ -65,7 +65,7 @@ def plot_vertically_stacked_cis(lowers, uppers, xlabel, out,
         tick.label.set_fontsize(fontsize)
 
     ax.get_yaxis().set_visible(False)
-    plt.xlabel(xlabel, fontsize=fontsize, **font)
+    ax.set_xlabel(xlabel, fontsize=fontsize, **font)
     plt.tight_layout()
     plt.savefig(out, dpi=dpi)
     return None
@@ -104,10 +104,10 @@ def plot_containing_rates(predicted_rates, observed_rates, label=None, out=None,
     for i in range(len(predicted_rates)):
         for j in range(len(predicted_rates[i])):
             ax.errorbar(predicted_rates[i][j], observed_rates[i][j], yerr=observed_rate_errors[i][j], marker=markers[i],
-                        ms=markersize, c=colors[i], label=label, linestyle="None")
+                        markersize=markersize, color=colors[i], label=label, linestyle="None")
 
     if show_diagonal_line:
-        ax.plot( xlimits, ylimits, linestyle=diagonal_line_style, lw=diagonal_line_w, color=diagonal_line_c )
+        ax.plot( xlimits, ylimits, linestyle=diagonal_line_style, linewidth=diagonal_line_w, color=diagonal_line_c )
 
     ax.set_xlim(xlimits)
     ax.set_ylim(ylimits)
@@ -164,8 +164,8 @@ def plot_ci_convergence(lowers, uppers, list_of_stops, xlabel, ylabel, out, xlim
         mean_color = "r"
 
     for repeat in range(nrepeats):
-        plt.plot(list_of_stops, lowers[repeat], linestyle=repeats_linestyle, color=repeats_colors[repeat], lw=repeats_lw, alpha=repeats_alpha)
-        plt.plot(list_of_stops, uppers[repeat], linestyle=repeats_linestyle, color=repeats_colors[repeat], lw=repeats_lw, alpha=repeats_alpha)
+        plt.plot(list_of_stops, lowers[repeat], linestyle=repeats_linestyle, color=repeats_colors[repeat], linewidth=repeats_lw, alpha=repeats_alpha)
+        plt.plot(list_of_stops, uppers[repeat], linestyle=repeats_linestyle, color=repeats_colors[repeat], linewidth=repeats_lw, alpha=repeats_alpha)
 
     lower_mean  = lowers.mean(axis=0)
     lower_error = lowers.std(axis=0)
@@ -177,8 +177,8 @@ def plot_ci_convergence(lowers, uppers, list_of_stops, xlabel, ylabel, out, xlim
     lower_error /= 2.
     upper_error /= 2.
 
-    plt.errorbar(list_of_stops, lower_mean, yerr=lower_error, linestyle=mean_linestyle, color=mean_color, lw=mean_lw, alpha=mean_alpha)
-    plt.errorbar(list_of_stops, upper_mean, yerr=upper_error, linestyle=mean_linestyle, color=mean_color, lw=mean_lw, alpha=mean_alpha)
+    plt.errorbar(list_of_stops, lower_mean, yerr=lower_error, linestyle=mean_linestyle, color=mean_color, linewidth=mean_lw, alpha=mean_alpha)
+    plt.errorbar(list_of_stops, upper_mean, yerr=upper_error, linestyle=mean_linestyle, color=mean_color, linewidth=mean_lw, alpha=mean_alpha)
 
     if xlimits is not None:
         ax.set_xlim(xlimits)

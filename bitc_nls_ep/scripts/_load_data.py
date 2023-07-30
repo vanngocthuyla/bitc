@@ -9,7 +9,7 @@ def load_heat_micro_cal(origin_heat_file):
     with open(origin_heat_file) as handle:
         handle.readline()
         for line in handle:
-            if len(line.split()) == 6:
+            if len(line.split()) == 6 or len(line.split()) == 8:
                 heats.append(np.float(line.split()[0]))
     return np.array(heats)
 

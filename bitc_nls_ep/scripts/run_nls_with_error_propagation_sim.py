@@ -1,5 +1,5 @@
 """
-fit the MLE model with 3 or 5 parameters for ITC data, then adjust the error of parameters by the error propagation 
+fit the MLE model with 3, 4, or 5 parameters for ITC data, then adjust the error of parameters by the error propagation 
 """
 import sys
 import os
@@ -7,7 +7,7 @@ import numpy as np
 import pickle
 from scipy.optimize import minimize, curve_fit
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pltx
 
 import glob
 import argparse
@@ -18,7 +18,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from _data_files import read_experimental_design_parameters
 from _load_data import load_heat_micro_cal
 from _mcmc_numpyro import deltaH0_guesses
-from _nls_with_error_propagation import fitted_function, fitted_function_fixed_Ls, fitted_function_fixed_P0_Ls, plot_ITC_curve
+from _nls_with_error_propagation_sim import fitted_function, fitted_function_fixed_Ls, fitted_function_fixed_P0_Ls, plot_ITC_curve
 
 sys.path.append('/home/vla/python/bitc_nls_ep/bayesian-itc')
 
@@ -43,6 +43,7 @@ args = parser.parse_args()
 assert args.fixed_Ls in [True, False], "The choice for fixed_concentration is only \"True\" or \"False\"."
 assert args.fixed_P0 in [True, False], "The choice for fixed_concentration is only \"True\" or \"False\"."
 assert len(args.experimental_design_parameters_dir)>0, "Please provide the directory of experimental design parameters."
+parameters = read_experimental_design_parameters(args.experimental_design_parameters_dir+'/experimental_design_parameters.dat')
 
 if not args.ordered_experiment_names == ' ':
     exper_names = args.ordered_experiment_names.split()
@@ -71,52 +72,46 @@ for name in exper_names:
     print("Running the", name)
     itc_file = os.path.join(args.itc_data_dir, name+".itc")
     integ_file = os.path.join(args.heat_data_dir, name + args.heat_file_suffix)
-    experiment_design_file = os.path.join(args.experimental_design_parameters_dir, name+'.pickle')
 
     q_actual_micro_cal = load_heat_micro_cal(integ_file)
     q_actual_cal = q_actual_micro_cal * 1e-6
+    
+    n_injections = len(q_actual_cal)
+    INJ_VOL = parameters[name]["injection_volume"]*1e-6               # in liter
+    injection_volumes = [INJ_VOL for _ in range(n_injections)]        # in liter
+    SYRINGE_CONCENTR = parameters[name]["syringe_concentration"]      # milli molar
+    CELL_CONCENTR = parameters[name]['cell_concentration']            # milli molar
 
-    experiment = pickle.load(open(experiment_design_file, "rb") )
-    n_injections = experiment['number_of_injections']
-    injection_volumes = []
-    for inj, injection in enumerate(experiment['injections']):
-        injection_volumes.append(injection.volume.magnitude)
-    injection_volumes = np.array(injection_volumes)*1e-6                              # in liter
-    SYRINGE_CONCENTR = experiment['syringe_concentration']['ligand'].magnitude        # milli molar
-    CELL_CONCENTR = experiment['cell_concentration']['macromolecule'].magnitude
-
-    DeltaH_0_min, DeltaH_0_max = deltaH0_guesses(q_actual_cal) #cal
-    plt.figure()
+    DeltaH_0_min, DeltaH_0_max = deltaH0_guesses(q_actual_cal)
     if args.fixed_Ls==False and args.fixed_P0==False:
-        params_guess = [CELL_CONCENTR, SYRINGE_CONCENTR, -8, -7, DeltaH_0_min] #P0, Ls, DeltaG, DeltaH, DeltaH_0  
-        lower = [CELL_CONCENTR*0.5, SYRINGE_CONCENTR*0.5, -40.0, -100, DeltaH_0_min]
-        upper = [CELL_CONCENTR*2, SYRINGE_CONCENTR*2, 0, 100, DeltaH_0_max]
-        fit_f, sigma = fitted_function(injection_volumes, q_actual_cal, 1.43*10**(-3), 
-                                       BETA, n_injections, params_guess, (lower, upper))
-        data_params[name] = params = fit_f 
-        data_error[name] = sigma
-        plot_ITC_curve(q_actual_cal, fit_f, 1.43*10**(-3), injection_volumes, BETA, n_injections, os.path.join('5_params', str('5_'+name)))
+        params_guess = [CELL_CONCENTR, SYRINGE_CONCENTR, -8, -7, DeltaH_0_min] #P0, Ls, DeltaG, DeltaH, DeltaH_0
+
+        optsol = minimize(fitted_function, x0=params_guess, 
+                          args=(q_actual_cal, 1.43*10**(-3), injection_volumes, 
+                                BETA, parameters[name]['number_of_injections']),
+                          options={'disp': False, 'maxiter': 10000})
+        error = np.sqrt(np.diag(np.array(optsol.hess_inv, dtype=np.float64)))
+        data_params[name] = optsol.x
+        data_error[name] = error
+    elif args.fixed_Ls==True and args.fixed_P0==True:
+        params_guess = [-8, -7, DeltaH_0_min] #DeltaG, DeltaH, DeltaH_0
+        optsol = minimize(fitted_function_fixed_P0_Ls, x0=params_guess,
+                          args=(CELL_CONCENTR, SYRINGE_CONCENTR, 
+                                q_actual_cal, 1.43*10**(-3), injection_volumes, 
+                                BETA, parameters[name]['number_of_injections']),
+                          options={'disp': False, 'maxiter': 10000})
+        error = np.sqrt(np.diag(np.array(optsol.hess_inv, dtype=np.float64)))
+        data_params[name] = optsol.x
+        data_error[name] = error
     elif args.fixed_Ls==True and args.fixed_P0==False:
         params_guess = [CELL_CONCENTR, -8, -7, DeltaH_0_min] #P0, DeltaG, DeltaH, DeltaH_0  
         lower = [CELL_CONCENTR*0.1, -40.0, -100, DeltaH_0_min]
         upper = [CELL_CONCENTR*10, 0, 100, DeltaH_0_max]
         fit_f, sigma = fitted_function_fixed_Ls(injection_volumes, q_actual_cal, SYRINGE_CONCENTR, 1.43*10**(-3), 
-                                                BETA, n_injections, params_guess, (lower, upper))
+                                                BETA, parameters[name]['number_of_injections'],
+                                                params_guess, (lower, upper))
         data_params[name] = fit_f
         data_error[name] = sigma
-        params = [fit_f[0], SYRINGE_CONCENTR, *fit_f[1:]]
-        plot_ITC_curve(q_actual_cal, params, 1.43*10**(-3), injection_volumes, BETA, n_injections, os.path.join('4_params', str('4_'+name)))
-    elif args.fixed_Ls==True and args.fixed_P0==True:
-        params_guess = [-10, -7, DeltaH_0_min] #DeltaG, DeltaH, DeltaH_0
-        lower = [-40.0, -100, DeltaH_0_min]
-        upper = [0, 100, DeltaH_0_max]
-        fit_f, sigma = fitted_function_fixed_P0_Ls(injection_volumes, q_actual_cal, CELL_CONCENTR, 
-                                                   SYRINGE_CONCENTR, 1.43*10**(-3), BETA, n_injections, 
-                                                   params_guess, (lower, upper))
-        data_params[name] = fit_f
-        data_error[name] = sigma
-        params = [CELL_CONCENTR, SYRINGE_CONCENTR, *fit_f]
-        plot_ITC_curve(q_actual_cal, params, 1.43*10**(-3), injection_volumes, BETA, n_injections, os.path.join('3_params', str('3_'+name)))
     else: 
         print("P0 often varies while Ls is fixed.")
 
@@ -149,14 +144,7 @@ elif args.fixed_Ls==True and args.fixed_P0==False:
     pickle.dump(MLE_data.to_pickle, open(os.path.join('MLE_4_parameters.pickle'), "wb"))
     MLE_data.to_csv('MLE_4_parameters.csv')
 
-# We don't know true values of Ls and P0, so we used mean of estimated values
-MLE_data = pd.read_csv('MLE_5_parameters.csv', index_col=0)
-true_Ls = np.concatenate((np.repeat(MLE_data[0:5].mean()['Ls'], 5), 
-                          np.repeat(MLE_data[5:].mean()['Ls'], 9)), 
-                         axis=0)
-true_P0 = np.concatenate((np.repeat(MLE_data[0:5].mean()['P0'], 5), 
-                          np.repeat(MLE_data[5:].mean()['P0'], 9)), 
-                         axis=0)
+parameters_true = read_experimental_design_parameters(args.experimental_design_parameters_dir+'/true_experimental_design_parameters.dat')
 
 if args.fixed_Ls==False and args.fixed_P0==False:
     propagation_params_list = ['P0_std', 'Ls_std', 'DeltaG_std', 'DeltaH_std']
@@ -168,27 +156,21 @@ elif args.fixed_Ls==True and args.fixed_P0==False:
 print("Parameters adjusted with error propagation: ", propagation_params_list)
 
 propagation_std = {}
-for i in range(len(exper_names)):
-    name = exper_names[i]
+for name in exper_names:
     print("Running the", name)
-
-    experiment_design_file = os.path.join(args.experimental_design_parameters_dir, name+'.pickle')
-    experiment = pickle.load(open(experiment_design_file, "rb") )
-    SYRINGE_CONCENTR = experiment['syringe_concentration']['ligand'].magnitude        # milli molar
-    CELL_CONCENTR = experiment['cell_concentration']['macromolecule'].magnitude
-
-    Ls_error = abs(true_Ls[i]-SYRINGE_CONCENTR)
-    P0_error = abs(true_P0[i]-CELL_CONCENTR)
-    
+    Ls_error_percent = abs(parameters_true[name]['syringe_concentration']-1.0)/1.0
+    P0_error_percent = abs(parameters_true[name]['cell_concentration']-0.1)/0.1
     error = []
-    for i in data_error.columns: 
-        if i in propagation_params_list:
-            if i == 'P0_std':
-                error.append(np.sqrt((data_error[i][name])**2+P0_error**2))
+    for i in data_params.columns: 
+        if i+'_std' in propagation_params_list:
+            old_std_percent = abs(data_error[i+'_std'][name]/data_params[i][name])
+            if i == 'P0':
+                new_std_percent = np.sqrt(old_std_percent**2+P0_error_percent**2)
             else: 
-                error.append(np.sqrt((data_error[i][name])**2+Ls_error**2))
+                new_std_percent = np.sqrt(old_std_percent**2+Ls_error_percent**2)
+            error.append(abs(new_std_percent*data_params[i][name]))
         else: 
-            error.append(data_error[i][name])
+            error.append(data_error[i+'_std'][name])
     propagation_std[name] = error
 
 propagation_std = pd.DataFrame.from_dict(propagation_std, orient='index')

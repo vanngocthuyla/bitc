@@ -24,7 +24,7 @@ from _data_files import read_experimental_design_parameters
 from _mcmc_numpyro import load_heat_micro_cal
 from _mcmc_numpyro import Bayesian_multiple_expt_fitting
 
-sys.path.append('/Users/seneysophie/Work/Python/Local/bitc_nls_ep/bayesian-itc')
+sys.path.append('/home/vla/python/bitc_nls_ep/bayesian-itc')
 
 from bitc.experiments import ExperimentMicroCal, ExperimentMicroCalWithDummyITC, ExperimentYaml
 from bitc.instruments import known_instruments, Instrument

@@ -71,20 +71,21 @@ def bayesian_credible_interval(sample, level, bootstrap_repeats=1000):
     """
     assert  0. < level < 1., "level must be 0 < level < 1"
 
-    alpha = 1. - level
-    lower, upper = az.hdi(np.array(sample), alpha)
+    # alpha = 1. - level
+    # lower, upper = pymc.utils.hpd(sample, alpha)
+    lower, upper = az.hdi(np.array(sample), level)
 
     lowers = []
     uppers = []
     for _ in range(bootstrap_repeats):
-        l, u = az.hdi( np.random.choice(sample, size=sample.shape[0], replace=True), alpha )
+        l, u = az.hdi( np.random.choice(sample, size=sample.shape[0], replace=True), level )
         lowers.append(l)
         uppers.append(u)
 
     lower_error = np.std(lowers) 
     upper_error = np.std(uppers)
 
-    return (lower, upper, lower_error, upper_error) 
+    return (lower, upper, lower_error, upper_error)
 
 
 def _contains_or_not(lower, upper, test_val):

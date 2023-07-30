@@ -4,12 +4,18 @@ run simulated heat
 from __future__ import print_function
 import argparse
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy
 import pymc
 
 from _simulated_heats import _sample_lognormal, expected_injection_heats, _write_heat_to_csv, _write_exper_design_file
 
+from matplotlib import font_manager
+font_dirs = ['/home/vla/python/fonts/arial']
+for font in font_manager.findSystemFonts(font_dirs):
+    font_manager.fontManager.addfont(font)
+matplotlib.rcParams['font.family'] = ['arial']
 
 parser = argparse.ArgumentParser()
 
@@ -55,6 +61,8 @@ sigma_cal = args.sigma_micro_cal * 10**(-6)
 
 plt.figure(figsize=figure_size)
 plt.ticklabel_format(style="sci", axis="y", scilimits=(0,0))
+
+numpy.random.seed(0)
 
 for i in range(args.number_of_sim_exper):
     qn_cal = expected_injection_heats(V0_litter, DeltaVn_liiter, P0s[i], Lss[i],

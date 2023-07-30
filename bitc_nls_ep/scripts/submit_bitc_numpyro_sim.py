@@ -13,7 +13,7 @@ parser.add_argument( "--heat_data_dir",                 type=str, default="1.itc
 parser.add_argument( "--exclude_experiments",           type=str, default="")
 parser.add_argument( "--split_by",                      type=int, default=10)
 
-parser.add_argument( "--script",                        type=str, default="/Users/seneysophie/Work/Python/Local/bitc_sim_mcmc_nls_ep/scripts/run_numpyro_sim.py")
+parser.add_argument( "--script",                        type=str, default="/home/vla/python/bitc_nls_ep/scripts/run_numpyro_sim.py")
 parser.add_argument( "--heat_file_suffix",              type=str, default=".DAT")
 
 parser.add_argument( "--dc",                            type=float, default=0.1)      # cell concentration relative uncertainty

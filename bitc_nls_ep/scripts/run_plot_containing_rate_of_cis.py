@@ -19,12 +19,10 @@ parser.add_argument( "--nonlinear_fit_result_file",             type=str, defaul
 parser.add_argument( "--ordered_experiment_names",              type=str, default=" ")
 parser.add_argument( "--parameter",                             type=str, default="DeltaG")
 parser.add_argument( "--central",                               type=str, default="median")
-parser.add_argument( "--true_value",                            type=int, default=1)
+parser.add_argument( "--true_value",                 action="store_true", default=True)
 
 args = parser.parse_args()
-args.true_value = bool(args.true_value)
 
-assert args.true_value in [0, 1], "1. Using true value or 0. No using true value"
 assert args.central in ["mean", "median"], "wrong central"
 
 print("ploting " + args.parameter)
@@ -77,7 +75,7 @@ if len(mcmc_trace_files)>0:
     b_rate_errors = []
     for level in LEVELS:
         print(level)
-        rate, rate_error = rate_of_containing_from_sample(samples, level, estimate_of_true=args.central, true_val=true_value, ci_type="bayesian", bootstrap_repeats=2)
+        rate, rate_error = rate_of_containing_from_sample(samples, level, estimate_of_true=args.central, true_val=true_value, ci_type="bayesian", bootstrap_repeats=1000)
 
         rate *= 100
         rate_error *= 100
