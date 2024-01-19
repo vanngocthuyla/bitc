@@ -1,4 +1,7 @@
-"""Example of translating experimental data into a correctly structured yaml file."""
+"""
+Example of translating experimental data into a correctly structured yaml file.
+copied from https://github.com/nguyentrunghai/bayesian-itc
+"""
 import yaml
 from glob import glob
 import pprint
