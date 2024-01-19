@@ -1,4 +1,8 @@
 #!/usr/bin/python
+"""
+copied from https://github.com/nguyentrunghai/bayesian-itc
+"""
+
 import logging
 import os
 from os.path import basename, splitext
