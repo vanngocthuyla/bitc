@@ -1,3 +1,7 @@
+"""
+copied from https://github.com/nguyentrunghai/bayesian-itc
+"""
+
 import logging
 
 from pint import UnitRegistry
