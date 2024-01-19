@@ -1,5 +1,6 @@
 """
 Contains Experiment and Injection classes.
+copied from https://github.com/choderalab/bayesian-itc
 """
 import os
 import logging
