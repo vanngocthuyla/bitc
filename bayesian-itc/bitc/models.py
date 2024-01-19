@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """
 PyMC models to describe ITC binding experiments
+copied from https://github.com/nguyentrunghai/bayesian-itc
 """
 
 from __future__ import print_function
