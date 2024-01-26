@@ -1,4 +1,7 @@
-"""Contains Report class for presenting summary of data in organized fashion."""
+"""
+Contains Report class for presenting summary of data in organized fashion.
+copied from https://github.com/nguyentrunghai/bayesian-itc
+"""
 
 # TODO work on a markdown version of the report
 from bitc.units import ureg

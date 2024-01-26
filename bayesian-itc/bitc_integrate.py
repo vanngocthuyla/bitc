@@ -1,6 +1,7 @@
 #!/usr/bin/python
 """
 This script integrates an ITC experiment using Gaussian process regression for baseline fitting.
+copied from https://github.com/nguyentrunghai/bayesian-itc
 """
 import logging
 import os

@@ -25,6 +25,8 @@ NOTES
 in references units.  Multiplication or division by desired units should ALWAYS be used to
 store or extract quantities in the desired units.
 
+This file was copied from https://github.com/nguyentrunghai/bayesian-itc.
+
 """
 import os
 

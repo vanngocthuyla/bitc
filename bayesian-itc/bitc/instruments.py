@@ -1,4 +1,7 @@
-"""Contains Isothermal titration calorimeter instrument classes."""
+"""
+Contains Isothermal titration calorimeter instrument classes.
+copied from https://github.com/nguyentrunghai/bayesian-itc
+"""
 
 import re
 import logging
